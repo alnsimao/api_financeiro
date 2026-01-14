@@ -1,6 +1,7 @@
 package aln.finance.system.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class User{
     Long id;
 
     @Column(name = "email", nullable = false, unique = true, length = 255)
+    @Email
     String email;
     @Column(name = "password", nullable = false, length = 255)
     String password;
