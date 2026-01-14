@@ -1,20 +1,20 @@
-create table users(
+create table IF NOT EXISTS users(
                       id BIGSERIAL PRIMARY KEY,
                       email varchar(255) UNIQUE NOT NULL,
                       password varchar(255) NOT NULL,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
-create table categories(
+create table IF NOT EXISTS categories(
                            id BIGSERIAL PRIMARY KEY,
                            user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE ,
                            name varchar(100)  NOT NULL,
                            type VARCHAR NOT NULL CHECK(type in('INCOME','EXPENSE')),
                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                            UNIQUE (user_id,name)
-)
+);
 
-create table transactions(
+create table IF NOT EXISTS transactions(
                              id BIGSERIAL PRIMARY KEY,
                              user_id BIGINT  NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                              category_id BIGINT NOT NULL REFERENCES categories(id) ON DELETE RESTRICT,
@@ -22,9 +22,9 @@ create table transactions(
                              description TEXT,
                              date DATE NOT NULL,
                              created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
-create table budgets(
+create table IF NOT EXISTS budgets (
                         id BIGSERIAL PRIMARY KEY,
                         user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
                         category_id BIGINT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
@@ -32,9 +32,9 @@ create table budgets(
                         period varchar(20) NOT NULL CHECK (period IN('MONTHLY','YEARLY')),
                         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                         UNIQUE(user_id,category_id,period)
-)
+);
 
-CREATE INDEX idx_transactions_user_date ON transactions (user_id, date DESC);
-CREATE INDEX idx_categories_user ON categories(user_id);
-CREATE INDEX idx_budgets_user ON budgets(user_id);
-CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_date ON transactions (user_id, date DESC);
+CREATE INDEX IF NOT EXISTS idx_categories_user ON categories(user_id);
+CREATE INDEX IF NOT EXISTS idx_budgets_user ON budgets(user_id);
+CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
