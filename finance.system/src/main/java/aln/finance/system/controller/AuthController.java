@@ -13,16 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private AuthService authService;
 
     @PostMapping("/register")
         public User createUser(@Valid @RequestBody User user){
-        return userRepository.save(user);
+        return authService.createUser(user);
         }
-
 
     }
 
