@@ -12,7 +12,9 @@ public class AuthService {
     private UserRepository userRepository;
 
     public User createUser(User user) {
-        if(userRepository.existsByEmail(user.getEmail()))throw new RuntimeException("User with email " + user.getEmail() + " already exists");
+        if(userRepository.existsByEmail
+                (user.getEmail()))
+            throw new RuntimeException("User with email " + user.getEmail() + " already exists");
         return userRepository.save(user);
     }
 }
