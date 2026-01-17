@@ -38,5 +38,6 @@ public class AuthService {
         String hashedPassword = user.getPassword();
         boolean matches = encoder.matches(loginRequest.getPassword(), hashedPassword);
 
+        return loginRequest;
     }
 }
