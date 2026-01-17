@@ -1,6 +1,7 @@
 package aln.finance.system.service;
 
 import aln.finance.system.dto.LoginRequest;
+import aln.finance.system.dto.LoginResponse;
 import aln.finance.system.model.User;
 import aln.finance.system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class AuthService {
         return userRepository.save(user);
     }
 
-    public LoginRequest login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
         Optional<User> userLogin = userRepository.findByEmail(loginRequest.getEmail());
 
         if(userLogin.isEmpty())
@@ -37,7 +38,9 @@ public class AuthService {
 
         String hashedPassword = user.getPassword();
         boolean matches = encoder.matches(loginRequest.getPassword(), hashedPassword);
-
-        return loginRequest;
+        if(!matches){
+            throw new RuntimeException("Invalid password");
+        }
+        return new LoginResponse("Login successful",user.getEmail());
     }
 }
