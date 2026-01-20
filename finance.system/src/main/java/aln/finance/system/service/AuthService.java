@@ -4,6 +4,7 @@ import aln.finance.system.dto.LoginRequest;
 import aln.finance.system.dto.LoginResponse;
 import aln.finance.system.model.User;
 import aln.finance.system.repository.UserRepository;
+import aln.finance.system.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,12 @@ public class AuthService {
     private  UserRepository userRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    private final JwtUtil jwtUtil;
+
+    public AuthService(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
 
 
 
@@ -41,9 +48,12 @@ public class AuthService {
 
         String hashedPassword = user.getPassword();
         boolean matches = encoder.matches(loginRequest.getPassword(), hashedPassword);
+
         if(!matches){
             throw new RuntimeException("Invalid password");
         }
-        return new LoginResponse("Login successful",user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        return new LoginResponse("Login successful",user.getEmail(),token);
     }
 }
