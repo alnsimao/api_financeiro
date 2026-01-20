@@ -5,6 +5,8 @@ import aln.finance.system.dto.LoginResponse;
 import aln.finance.system.model.User;
 import aln.finance.system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class AuthService {
     private  UserRepository userRepository;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
 
 
     public User createUser(User user) {

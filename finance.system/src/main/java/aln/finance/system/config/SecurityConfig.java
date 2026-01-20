@@ -1,4 +1,4 @@
-package aln.finance.system.Config;
+package aln.finance.system.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

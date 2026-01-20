@@ -22,17 +22,17 @@ public class User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+   private Long id;
 
     @Column(name = "email", nullable = false, unique = true, length = 255)
     @NotBlank
     @Email
-    String email;
+    private String email;
 
     @Column(name = "password", nullable = false, length = 255)
-    String password;
+    private String password;
 
     @Column(name = "created_at", nullable = false)
     @CreationTimestamp
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 }
