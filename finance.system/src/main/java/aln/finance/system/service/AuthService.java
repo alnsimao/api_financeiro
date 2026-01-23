@@ -31,8 +31,7 @@ public class AuthService {
 
 
     public User createUser(User user) {
-        if(userRepository.existsByEmail
-                (user.getEmail()))
+        if(userRepository.existsByEmail(user.getEmail()))
             throw new RuntimeException("User with email " + user.getEmail() + " already exists");
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -53,7 +52,6 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
         String token = jwtUtil.generateToken(user.getEmail());
-
         return new LoginResponse("Login successful",user.getEmail(),token);
     }
 }
