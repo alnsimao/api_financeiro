@@ -10,7 +10,7 @@ import aln.finance.system.repository.TransactionRepository;
 import aln.finance.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import sun.net.ftp.FtpDirEntry;
+
 
 @Service
 @RequiredArgsConstructor
