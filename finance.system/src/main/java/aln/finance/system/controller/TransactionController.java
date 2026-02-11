@@ -12,6 +12,4 @@ public class TransactionController {
     @Autowired
     TransactionService transactionService;
 
-    @PostMapping("/")
-
 }

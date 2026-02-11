@@ -6,10 +6,8 @@ import aln.finance.system.model.User;
 import aln.finance.system.repository.UserRepository;
 import aln.finance.system.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,17 +51,13 @@ public class AuthService {
         if(!matches){
             throw new RuntimeException("Invalid password");
         }
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getId());
         return new LoginResponse("Login successful",user.getEmail(),token);
     }
     public Long getLoggedUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+        return Long.parseLong(authentication.getName());
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return user.getId();
     }
 
 }

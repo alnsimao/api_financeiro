@@ -37,6 +37,7 @@ public class CategoryService {
         }
 
         public List<Category> getAllCategories(Long userId) {
+            System.out.println(userId);
             return categoryRepository.findByUserId(userId);
         }
         public void deleteCategory(Long userId, Long categoryId) {

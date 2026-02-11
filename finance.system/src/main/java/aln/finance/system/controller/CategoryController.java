@@ -26,7 +26,9 @@ public class CategoryController {
     }
     @GetMapping("/")
     public List<Category> getAllCategories(){
+        System.out.println("Getting all categories");
         long userId = authService.getLoggedUserId();
+
         return categoryService.getAllCategories(userId);
     }
     @PutMapping("/{id}")

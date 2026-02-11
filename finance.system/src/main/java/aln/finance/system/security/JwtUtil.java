@@ -19,13 +19,13 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String email) {
+    public String generateToken(Long userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
         SecretKey key = getSecretKey();
 
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(userId.toString())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(key)
@@ -49,16 +49,16 @@ public class JwtUtil {
             return false;
         }
     }
-    public String getEmailFromToken(String token) {
-        String email;
+    public Long getUserIdFromToken(String token) {
+        long userId;
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(getSecretKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            email = claims.getSubject();
-            return  email;
+            userId = Long.parseLong(claims.getSubject());
+            return  userId;
         }  catch (Exception e) {
             return null;
         }

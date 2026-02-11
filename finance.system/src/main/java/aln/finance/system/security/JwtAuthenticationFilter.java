@@ -39,11 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
         return;
     }
-    String email = jwtUtil.getEmailFromToken(token);
+    Long userId = jwtUtil.getUserIdFromToken(token);
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
-                        email,
+                        userId,
                         null,
                         List.of(new SimpleGrantedAuthority("USER")));
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -51,6 +51,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
         System.out.println("TOKEN: " + token);
-        System.out.println("EMAIL DO TOKEN: " + email);
+        System.out.println("ID DO TOKEN: " + userId);
     }
 }
