@@ -35,6 +35,7 @@ public class TransactionService {
        newTransaction.setUser(user);
        newTransaction.setAmount(transaction.getAmount());
        newTransaction.setDate(transaction.getDate());
+       newTransaction.setDescription(transaction.getDescription());
         return transactionRepository.save(newTransaction);
 
     }
