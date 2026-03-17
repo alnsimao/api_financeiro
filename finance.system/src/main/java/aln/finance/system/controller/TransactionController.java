@@ -23,8 +23,8 @@ public class TransactionController {
     public Transaction createTransaction(@Valid @RequestBody TransactionDTO transaction) {
         Long userId = authService.getLoggedUserId();
         Long categoryId = transaction.getCategoryId();
-
         return transactionService.createTransaction(transaction,userId,categoryId);
     }
+
 
 }

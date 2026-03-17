@@ -9,6 +9,8 @@ import aln.finance.system.repository.CategoryRepository;
 import aln.finance.system.repository.TransactionRepository;
 import aln.finance.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -37,6 +39,10 @@ public class TransactionService {
        newTransaction.setDate(transaction.getDate());
        newTransaction.setDescription(transaction.getDescription());
         return transactionRepository.save(newTransaction);
+    }
+
+    public Page<Transaction> getTransaction(Long userId, Pageable page) {
+        return transactionRepository.findByUser_Id(userId, page);
 
     }
 }
