@@ -65,17 +65,16 @@ public class TransactionService {
             specification = specification.and(TransactionSpecification.hasCategory(filter.categoryId())
             );
         }
-
         if (filter.initialDate() != null && filter.finalDate() != null) {
             specification = specification.and(TransactionSpecification.dateBetween(filter.initialDate(), filter.finalDate())
             );
         }
-        if(filter.minAmount() != null && filter.maxAmount() != null) {
+        if (filter.minAmount() != null && filter.maxAmount() != null) {
             specification = specification.and(TransactionSpecification.amountBetween(filter.minAmount(), filter.maxAmount()));
         }
         Page<Transaction> transactions = transactionRepository.findAll(specification, page);
 
-        return  transactions.map(transaction -> new GetTransactionResponseDTO(
+        return transactions.map(transaction -> new GetTransactionResponseDTO(
                 transaction.getId(),
                 transaction.getAmount(),
                 transaction.getDescription(),
@@ -83,12 +82,37 @@ public class TransactionService {
                 transaction.getCategory().getName(),
                 transaction.getCreatedAt(),
                 transaction.getDate()
-        )
-        );
+        ));
+    }
 
+    public Transaction editTransaction(Long transactionId, TransactionDTO transaction, Long userId, Long categoryId) {
 
+        Transaction existingTransaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
 
+        if(!existingTransaction.getUser().getId().equals(userId)) {
+            throw new RuntimeException("User don't match with user id");
+        }
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+        if(!category.getUser().getId().equals(userId)) {
+            throw new RuntimeException("Category don't match with user id");
+        }
+        existingTransaction.setCategory(category);
+        existingTransaction.setDescription(transaction.getDescription());
+        existingTransaction.setAmount(transaction.getAmount());
+        existingTransaction.setDate(transaction.getDate());
 
+        return transactionRepository.save(existingTransaction);
+    }
+
+    public void deleteTransaction(Long transactionId,Long userId) {
+        Transaction existingTransaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new RuntimeException("Transaction not found"));
+        if(!existingTransaction.getUser().getId().equals(userId)) {
+            throw new RuntimeException("User don't match with user id");
+        }
+        transactionRepository.delete(existingTransaction);
     }
 
 
