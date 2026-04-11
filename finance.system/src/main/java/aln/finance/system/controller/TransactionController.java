@@ -33,10 +33,12 @@ public class TransactionController {
     @GetMapping("/list")
     public Page<GetTransactionResponseDTO> listTransaction(Pageable page) {
         Long userId = authService.getLoggedUserId();
+        Page<GetTransactionResponseDTO> resultado = transactionService.getTransaction(userId, page);
+        System.out.println("Classe retornada: " + resultado.getContent().get(0).getClass().getName());
         return transactionService.getTransaction(userId, page);
     }
 
-    @GetMapping
+    @GetMapping("/")
     public Page<GetTransactionResponseDTO> getTransactions(
             @RequestParam(required = false) LocalDate initialDate
             , @RequestParam(required = false) LocalDate finalDate

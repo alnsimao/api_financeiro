@@ -9,7 +9,7 @@ import java.time.LocalDate;
 public class TransactionSpecification {
 
     public static Specification<Transaction> hasUserId(Long userId) {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("user"), userId);
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId);
     }
 
     public static Specification<Transaction> hasCategory(Long categoryId) {
