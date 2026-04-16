@@ -26,7 +26,7 @@ public class TransactionService {
     private final UserRepository userRepository;
 
 
-    public Transaction createTransaction(TransactionDTO transaction, Long userId, Long categoryId) {
+    public GetTransactionResponseDTO createTransaction(TransactionDTO transaction, Long userId, Long categoryId) {
         if (userRepository.findById(userId).isEmpty()) {
             throw new RuntimeException("User not found");
         }
@@ -44,7 +44,10 @@ public class TransactionService {
         newTransaction.setAmount(transaction.getAmount());
         newTransaction.setDate(transaction.getDate());
         newTransaction.setDescription(transaction.getDescription());
-        return transactionRepository.save(newTransaction);
+
+        Transaction savedTransaction = transactionRepository.save(newTransaction);
+        return new GetTransactionResponseDTO(savedTransaction);
+
     }
 
     public Page<GetTransactionResponseDTO> getTransaction(Long userId, Pageable page) {
@@ -99,6 +102,7 @@ public class TransactionService {
             throw new RuntimeException("Category don't match with user id");
         }
         existingTransaction.setCategory(category);
+
         existingTransaction.setDescription(transaction.getDescription());
         existingTransaction.setAmount(transaction.getAmount());
         existingTransaction.setDate(transaction.getDate());
