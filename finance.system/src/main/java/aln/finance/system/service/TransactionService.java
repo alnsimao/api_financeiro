@@ -85,7 +85,7 @@ public class TransactionService {
         ));
     }
 
-    public Transaction editTransaction(Long transactionId, TransactionDTO transaction, Long userId, Long categoryId) {
+    public GetTransactionResponseDTO editTransaction(Long transactionId, TransactionDTO transaction, Long userId, Long categoryId) {
 
         Transaction existingTransaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found"));
@@ -103,7 +103,10 @@ public class TransactionService {
         existingTransaction.setAmount(transaction.getAmount());
         existingTransaction.setDate(transaction.getDate());
 
-        return transactionRepository.save(existingTransaction);
+        Transaction savedTransaction = transactionRepository.save(existingTransaction);
+
+        return new GetTransactionResponseDTO(savedTransaction);
+
     }
 
     public void deleteTransaction(Long transactionId,Long userId) {

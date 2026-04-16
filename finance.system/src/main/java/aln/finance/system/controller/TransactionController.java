@@ -52,14 +52,10 @@ public class TransactionController {
         return transactionService.getTransactionsWithFilters(userId, filter, page);
     }
         @PutMapping("/{id}")
-        public Transaction updateTransaction(@PathVariable Long id, @Valid @RequestBody TransactionDTO transaction) {
+        public GetTransactionResponseDTO updateTransaction(@PathVariable Long id, @Valid @RequestBody TransactionDTO transaction) {
             Long userId = authService.getLoggedUserId();
-           return transactionService.editTransaction(
-                   id,
-                   transaction,
-                   userId,
-                   transaction.getCategoryId()
-           );
+            return transactionService.editTransaction(id,transaction,userId,transaction.getCategoryId());
+
         }
     @DeleteMapping("/{id}")
     public void deleteTransaction(@PathVariable Long id) {

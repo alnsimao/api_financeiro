@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class TransactionSpecification {
+public class  TransactionSpecification {
 
     public static Specification<Transaction> hasUserId(Long userId) {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId);
