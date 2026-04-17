@@ -5,16 +5,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
 
+public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
     Page<Transaction> findByUser_Id(Long userId, Pageable pageable);
-    Page<Transaction> findByUser_IdAndDateBetween(Long userId, LocalDate initialDate,LocalDate finalDate, Pageable pageable);
-    Page<Transaction> findByUser_IdAndCategory_Id(Long userId, Long categoryId, Pageable pageable);
-    Page<Transaction> findByUser_IdAndAmountGreaterThan(Long userId, BigDecimal amount, Pageable pageable);
-    Page<Transaction> findByUser_IdAndAmountLessThan(Long userId, BigDecimal amount, Pageable pageable);
-    Page<Transaction> findByUser_IdAndAmountBetween(Long userId, BigDecimal initialAmount,BigDecimal finalAmount, Pageable pageable);
+
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+            "WHERE t.user.id = :userId " +
+            "AND t.category.categoryType = 'INCOME' " +
+            "AND t.date BETWEEN :start AND :end")
+    BigDecimal sumIncome(Long userId, LocalDate start, LocalDate end);
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
+            "WHERE t.user.id = :userId " +
+            "AND t.category.categoryType = 'EXPENSE' " +
+            "AND t.date BETWEEN :start AND :end")
+    BigDecimal sumExpense(Long userId, LocalDate start, LocalDate end);
 }
