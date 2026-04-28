@@ -31,6 +31,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
     @Query("SELECT new aln.finance.system.dto.CategorySummaryDTO(t.category.name, SUM(t.amount))" +
     "FROM Transaction t" +
     " WHERE t.user.id = :userId AND t.date BETWEEN :start AND :end"+
-    "GROUP BY t.category.name")
+    " GROUP BY t.category.name")
     List<CategorySummaryDTO> sumByCategory(Long userId, LocalDate start, LocalDate end);
 }
