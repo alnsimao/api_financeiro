@@ -1,6 +1,7 @@
 package aln.finance.system.repository;
 
 import aln.finance.system.dto.CategorySummaryDTO;
+import aln.finance.system.dto.MonthlyTrendDTO;
 import aln.finance.system.model.Transaction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,4 +34,15 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
     " WHERE t.user.id = :userId AND t.date BETWEEN :start AND :end"+
     " GROUP BY t.category.name")
     List<CategorySummaryDTO> sumByCategory(Long userId, LocalDate start, LocalDate end);
+
+    @Query("SELECT new aln.finance.system.dto.MonthlyTrendDTO(" +
+            "FUNCTION('MONTH', t.date), " +
+            "FUNCTION('YEAR', t.date), " +
+            "SUM(t.amount), " +
+            "t.category.type) " +
+            "FROM Transaction t " +
+            "WHERE t.user.id = :userId AND t.date BETWEEN :start AND :end " +
+            "GROUP BY FUNCTION('YEAR', t.date), FUNCTION('MONTH', t.date), t.category.type " +
+            "ORDER BY FUNCTION('YEAR', t.date) DESC, FUNCTION('MONTH', t.date) DESC")
+    List<MonthlyTrendDTO> getMonthlyTrend(Long userId, LocalDate start, LocalDate end);
 }
