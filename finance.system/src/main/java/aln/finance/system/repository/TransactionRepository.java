@@ -17,12 +17,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
 
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
             "WHERE t.user.id = :userId " +
-            "AND t.category.categoryType = 'INCOME' " +
+            "AND t.category.type = 'INCOME' " +
             "AND t.date BETWEEN :start AND :end")
     BigDecimal sumIncome(Long userId, LocalDate start, LocalDate end);
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
             "WHERE t.user.id = :userId " +
-            "AND t.category.categoryType = 'EXPENSE' " +
+            "AND t.category.type = 'EXPENSE' " +
             "AND t.date BETWEEN :start AND :end")
     BigDecimal sumExpense(Long userId, LocalDate start, LocalDate end);
 }
