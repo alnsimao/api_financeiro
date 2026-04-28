@@ -7,6 +7,6 @@ public record MonthlyTrendDTO(
         Integer month,
         Integer year,
         BigDecimal totalAmount,
-        CategoryType type // "INCOME" OU "EXPENSE";
+        CategoryType type
 ) {
 }

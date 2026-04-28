@@ -37,6 +37,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
 
     @Query("SELECT new aln.finance.system.dto.MonthlyTrendDTO(" +
             "CAST(EXTRACT(MONTH FROM t.date) AS integer), " +
+            "CAST(EXTRACT(YEAR FROM t.date) AS integer), " +
             "SUM(t.amount), " +
             "t.category.type) " +
             "FROM Transaction t " +
