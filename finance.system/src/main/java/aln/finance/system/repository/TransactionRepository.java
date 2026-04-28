@@ -36,13 +36,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long>,
     List<CategorySummaryDTO> sumByCategory(Long userId, LocalDate start, LocalDate end);
 
     @Query("SELECT new aln.finance.system.dto.MonthlyTrendDTO(" +
-            "FUNCTION('MONTH', t.date), " +
-            "FUNCTION('YEAR', t.date), " +
+            "CAST(EXTRACT(MONTH FROM t.date) AS integer), " +
             "SUM(t.amount), " +
             "t.category.type) " +
             "FROM Transaction t " +
             "WHERE t.user.id = :userId AND t.date BETWEEN :start AND :end " +
-            "GROUP BY FUNCTION('YEAR', t.date), FUNCTION('MONTH', t.date), t.category.type " +
-            "ORDER BY FUNCTION('YEAR', t.date) DESC, FUNCTION('MONTH', t.date) DESC")
+            "GROUP BY EXTRACT(YEAR FROM t.date), EXTRACT(MONTH FROM t.date), t.category.type " +
+            "ORDER BY EXTRACT(YEAR FROM t.date) DESC, EXTRACT(MONTH FROM t.date) DESC")
     List<MonthlyTrendDTO> getMonthlyTrend(Long userId, LocalDate start, LocalDate end);
 }

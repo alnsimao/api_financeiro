@@ -2,6 +2,7 @@ package aln.finance.system.service;
 
 import aln.finance.system.dto.CategorySummaryDTO;
 import aln.finance.system.dto.DashboardSummaryDTO;
+import aln.finance.system.dto.MonthlyTrendDTO;
 import aln.finance.system.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,8 @@ public class DashboardService {
     }
     public List<CategorySummaryDTO> getTotalByCategory(Long userId, LocalDate start, LocalDate end) {
         return transactionRepository.sumByCategory(userId, start, end);
+    }
+    public List<MonthlyTrendDTO> getMonthlyTrend(Long userId, LocalDate start, LocalDate end) {
+        return transactionRepository.getMonthlyTrend(userId, start, end);
     }
 }

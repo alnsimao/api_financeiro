@@ -2,6 +2,7 @@ package aln.finance.system.controller;
 
 import aln.finance.system.dto.CategorySummaryDTO;
 import aln.finance.system.dto.DashboardSummaryDTO;
+import aln.finance.system.dto.MonthlyTrendDTO;
 import aln.finance.system.service.AuthService;
 import aln.finance.system.service.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +36,11 @@ public class DashboardController {
         System.out.println("LOG: TESTE DO METODO");
         Long userId = authService.getLoggedUserId();
         return dashboardService.getTotalByCategory(userId, start, end);
+    }
+    @GetMapping("/monthly-trend")
+    public List<MonthlyTrendDTO> getMonthlyTrend(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+                                                 @RequestParam @DateTimeFormat(iso= DateTimeFormat.ISO.DATE) LocalDate end) {
+        Long userId = authService.getLoggedUserId();
+        return dashboardService.getMonthlyTrend(userId, start, end);
     }
 }
