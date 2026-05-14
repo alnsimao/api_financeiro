@@ -24,16 +24,16 @@ public class BudgetService {
     @Autowired
     private UserRepository userRepository;
 
-    public BudgetResponseDTO createBudget(Long userId, Long categoryId, BudgetRequestDTO budget){
-        if(userRepository.findById(userId).isEmpty()) {
+    public BudgetResponseDTO createBudget(Long userId, Long categoryId, BudgetRequestDTO budget) {
+        if (userRepository.findById(userId).isEmpty()) {
             throw new RuntimeException("User not found");
         }
         User user = userRepository.findById(userId).get();
-        if(categoryRepository.findById(categoryId).isEmpty()) {
+        if (categoryRepository.findById(categoryId).isEmpty()) {
             throw new RuntimeException("Category not found");
         }
         Category category = categoryRepository.findById(categoryId).get();
-        if(!category.getUser().getId().equals(user.getId())) {
+        if (!category.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("Category IDs don't match");
         }
         budgetRepository.findByUserIdAndCategoryIdAndPeriod(userId, budget.categoryId(), budget.period())
@@ -57,10 +57,10 @@ public class BudgetService {
                 BigDecimal.ZERO
         );
 
+        private
+
 
     }
-
-
 
 
 }
