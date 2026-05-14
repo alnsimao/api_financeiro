@@ -8,14 +8,20 @@ import aln.finance.system.model.User;
 import aln.finance.system.repository.BudgetRepository;
 import aln.finance.system.repository.CategoryRepository;
 import aln.finance.system.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 public class BudgetService {
+    @Autowired
     private BudgetRepository budgetRepository;
+    @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
     private UserRepository userRepository;
 
     public BudgetResponseDTO createBudget(Long userId, Long categoryId, BudgetRequestDTO budget){
@@ -50,7 +56,6 @@ public class BudgetService {
                 savedBudget.getPeriod(),
                 BigDecimal.ZERO
         );
-
 
 
     }
