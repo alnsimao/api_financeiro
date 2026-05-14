@@ -1,7 +1,61 @@
 package aln.finance.system.service;
 
+import aln.finance.system.dto.BudgetRequestDTO;
+import aln.finance.system.dto.BudgetResponseDTO;
+import aln.finance.system.model.Budget;
+import aln.finance.system.model.Category;
+import aln.finance.system.model.User;
+import aln.finance.system.repository.BudgetRepository;
+import aln.finance.system.repository.CategoryRepository;
+import aln.finance.system.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 
 @Service
 public class BudgetService {
+    private BudgetRepository budgetRepository;
+    private CategoryRepository categoryRepository;
+    private UserRepository userRepository;
+
+    public BudgetResponseDTO createBudget(Long userId, Long categoryId, BudgetRequestDTO budget){
+        if(userRepository.findById(userId).isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        User user = userRepository.findById(userId).get();
+        if(categoryRepository.findById(categoryId).isEmpty()) {
+            throw new RuntimeException("Category not found");
+        }
+        Category category = categoryRepository.findById(categoryId).get();
+        if(!category.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Category IDs don't match");
+        }
+        budgetRepository.findByUserIdAndCategoryIdAndPeriod(userId, budget.categoryId(), budget.period())
+                .ifPresent(b -> {
+                    throw new RuntimeException("Budget already exists for this category and period");
+                });
+        Budget budgetEntity = new Budget();
+        budgetEntity.setUser(user);
+        budgetEntity.setCategory(category);
+        budgetEntity.setLimitAmount(budget.limitAmount());
+        budgetEntity.setPeriod(budget.period());
+
+        Budget savedBudget = budgetRepository.save(budgetEntity);
+
+        return new BudgetResponseDTO(
+                savedBudget.getId(),
+                category.getId(),
+                category.getName(),
+                savedBudget.getLimitAmount(),
+                savedBudget.getPeriod(),
+                BigDecimal.ZERO
+        );
+
+
+
+    }
+
+
+
+
 }

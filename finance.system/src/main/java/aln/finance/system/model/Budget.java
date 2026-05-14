@@ -27,7 +27,7 @@ public class Budget {
     private Long id;
     @Column(nullable = false,length = 20)
     @Enumerated(EnumType.STRING)
-    private String period;
+    private BudgetPeriod period;
 
     @Column(name = "limit_amount", nullable = false, precision = 10,scale = 2)
     BigDecimal limitAmount;
