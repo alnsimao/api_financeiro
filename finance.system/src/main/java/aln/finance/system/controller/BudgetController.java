@@ -34,10 +34,10 @@ public class BudgetController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @PutMapping("/{budgetId}")
-    public ResponseEntity<BudgetResponseDTO> editBudget(@PathVariable Long budgetId, @RequestBody BudgetRequestDTO budgetRequestDTO) {
+    @PutMapping("/{id}")
+    public ResponseEntity<BudgetResponseDTO> editBudget(@PathVariable Long id, @RequestBody BudgetRequestDTO budgetRequestDTO) {
         Long userId = authService.getLoggedUserId();
-        BudgetResponseDTO responseDTO = budgetService.updateBudget(budgetId,userId,budgetRequestDTO);
+        BudgetResponseDTO responseDTO = budgetService.updateBudget(userId,id,budgetRequestDTO);
         return ResponseEntity.ok(responseDTO);
     }
 
