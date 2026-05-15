@@ -7,12 +7,17 @@ import aln.finance.system.model.Category;
 import aln.finance.system.model.User;
 import aln.finance.system.repository.BudgetRepository;
 import aln.finance.system.repository.CategoryRepository;
+import aln.finance.system.repository.TransactionRepository;
 import aln.finance.system.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,6 +29,8 @@ public class BudgetService {
     private CategoryRepository categoryRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     public BudgetResponseDTO createBudget(Long userId, Long categoryId, BudgetRequestDTO budget) {
         if (userRepository.findById(userId).isEmpty()) {
@@ -106,6 +113,41 @@ public class BudgetService {
         budgetRepository.deleteById(budgetId);
 
 
+    }
+
+    public List<BudgetResponseDTO> listBudgetsWithProgress(Long userId) {
+
+        List<Budget> budgets = budgetRepository.findByUserId(userId);
+
+
+        return budgets.stream().map(budget -> {
+            LocalDate now = LocalDate.now();
+            LocalDate startDate = (budget.getPeriod() == Budget.BudgetPeriod.MONTHLY)
+                    ? now.withDayOfMonth(1)
+                    : now.withDayOfYear(1);
+            LocalDate endDate = now;
+
+            BigDecimal consumedAmount = budgetRepository.sumByCategoryAndDateRange(
+                    userId,
+                    budget.getCategory().getId(),
+                    startDate,
+                    endDate
+            );
+            consumedAmount = (consumedAmount != null) ? consumedAmount : BigDecimal.ZERO;
+            BigDecimal percentage = BigDecimal.ZERO;
+            if (budget.getLimitAmount().compareTo(BigDecimal.ZERO) > 0) {
+                percentage = consumedAmount.divide(budget.getLimitAmount(), 4, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal("100"));
+            }
+            return new BudgetResponseDTO(
+                    budget.getId(),
+                    budget.getCategory().getId(),
+                    budget.getCategory().getName(),
+                    budget.getLimitAmount(),
+                    budget.getPeriod(),
+                    percentage.setScale(2, RoundingMode.HALF_UP)
+            );
+        }).collect(Collectors.toList());
     }
 
 
