@@ -34,10 +34,19 @@ public class BudgetController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    @DeleteMapping
-    public void deleteBudgets(@RequestBody BudgetRequestDTO budgetRequestDTO) {
+    @PutMapping("/{budgetId}")
+    public ResponseEntity<BudgetResponseDTO> editBudget(@PathVariable Long budgetId, @RequestBody BudgetRequestDTO budgetRequestDTO) {
         Long userId = authService.getLoggedUserId();
-        budgetService.deleteBudget(userId,budgetRequestDTO.categoryId());
+        BudgetResponseDTO responseDTO = budgetService.updateBudget(budgetId,userId,budgetRequestDTO);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @DeleteMapping("/{budgetId}")
+    public ResponseEntity<Void> deleteBudgets(@PathVariable Long budgetId) {
+        Long userId = authService.getLoggedUserId();
+        budgetService.deleteBudget(userId,budgetId);
+        return ResponseEntity.noContent().build();
+
     }
 
 
