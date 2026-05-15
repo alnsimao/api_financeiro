@@ -6,10 +6,9 @@ import aln.finance.system.service.AuthService;
 import aln.finance.system.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/budgets")
@@ -28,6 +27,20 @@ public class BudgetController {
         BudgetResponseDTO responseDTO = budgetService.createBudget(userId,categoryId,budgetRequestDTO);
         return ResponseEntity.ok(responseDTO);
     }
+    @GetMapping
+    public ResponseEntity<List<BudgetResponseDTO>> getBudgets() {
+        Long userId = authService.getLoggedUserId();
+        List<BudgetResponseDTO> responseDTO = budgetService.listBudgetsWithProgress(userId);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @DeleteMapping
+    public void deleteBudgets(@RequestBody BudgetRequestDTO budgetRequestDTO) {
+        Long userId = authService.getLoggedUserId();
+        budgetService.deleteBudget(userId,budgetRequestDTO.categoryId());
+    }
+
+
 
 
 }
