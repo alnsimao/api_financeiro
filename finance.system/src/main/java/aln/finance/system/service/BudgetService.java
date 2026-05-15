@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+
 @Service
 @RequiredArgsConstructor
 public class BudgetService {
@@ -29,6 +30,7 @@ public class BudgetService {
             throw new RuntimeException("User not found");
         }
         User user = userRepository.findById(userId).get();
+
         if (categoryRepository.findById(categoryId).isEmpty()) {
             throw new RuntimeException("Category not found");
         }
@@ -56,11 +58,43 @@ public class BudgetService {
                 savedBudget.getPeriod(),
                 BigDecimal.ZERO
         );
+    }
 
-        private
+    public BudgetResponseDTO updateBudget(Long userId, Long budgetId, BudgetRequestDTO budget) {
 
+        Budget existingBudget = budgetRepository.findById(budgetId).orElseThrow(() -> new RuntimeException("Budget not found"));
+
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        if (!existingBudget.getUser().getId().equals(userId)) {
+            throw new RuntimeException("You don't have permission to update this budget");
+        }
+
+        Category category = categoryRepository.findById(budget.categoryId()).orElseThrow(
+                () -> new RuntimeException("Category not found")
+        );
+
+        if (!existingBudget.getCategory().getId().equals(budget.categoryId())) {
+            throw new RuntimeException("Category IDs don't match");
+        }
+
+
+        existingBudget.setCategory(category);
+        existingBudget.setLimitAmount(budget.limitAmount());
+        existingBudget.setPeriod(budget.period());
+
+        Budget updatedBudget = budgetRepository.save(existingBudget);
+
+        return new BudgetResponseDTO(updatedBudget.getId(),
+                category.getId(),
+                category.getName(),
+                updatedBudget.getLimitAmount(),
+                updatedBudget.getPeriod(),
+                BigDecimal.ZERO);
 
     }
+
 
 
 }
