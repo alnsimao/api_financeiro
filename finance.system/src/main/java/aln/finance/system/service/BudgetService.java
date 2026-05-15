@@ -95,6 +95,19 @@ public class BudgetService {
 
     }
 
+    public  void deleteBudget(Long userId, Long budgetId) {
+        Budget existingBudget = budgetRepository.findById(budgetId).orElseThrow(() -> new RuntimeException("Budget not found"));
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        if (!existingBudget.getUser().getId().equals(userId)) {
+            throw new RuntimeException("You don't have permission to delete this budget");
+        }
+        budgetRepository.deleteById(budgetId);
+
+
+    }
+
 
 
 }
