@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 import java.math.BigDecimal;
@@ -16,7 +17,11 @@ import java.util.List;
 
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long>, JpaSpecificationExecutor<Transaction> {
-    Page<Transaction> findByUser_Id(Long userId, Pageable pageable);
+    @Query(
+            value = "SELECT t FROM Transaction t JOIN FETCH t.category WHERE t.user.id = :userId",
+            countQuery = "SELECT COUNT(t) FROM Transaction t WHERE t.user.id = :userId"
+    )
+    Page<Transaction> findByUser_Id(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t " +
             "WHERE t.user.id = :userId " +
