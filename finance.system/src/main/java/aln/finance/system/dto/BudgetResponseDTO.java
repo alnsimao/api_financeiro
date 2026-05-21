@@ -12,5 +12,6 @@ public record BudgetResponseDTO(
         String categoryName,
         BigDecimal limitAmount,
         Budget.BudgetPeriod period,
-        BigDecimal usedPercentage
+        BigDecimal usedPercentage,
+        BigDecimal consumedAmount
 ) { }

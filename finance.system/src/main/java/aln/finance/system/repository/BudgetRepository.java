@@ -1,8 +1,10 @@
 package aln.finance.system.repository;
 
+import aln.finance.system.dto.BudgetResponseDTO;
 import aln.finance.system.model.Budget;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,4 +21,24 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     "AND t.date BETWEEN :startDate AND :endDate")
     BigDecimal sumByCategoryAndDateRange(Long userId, Long categoryId, LocalDate startDate, LocalDate endDate);
 
+    @Query("SELECT new aln.finance.system.dto.BudgetResponseDTO(" +
+            "b.id, c.id, c.name, b.limitAmount, b.period, " +
+            "BigDecimal.ZERO, " +
+            "COALESCE((SELECT SUM(t.amount) FROM Transaction t " +
+            "WHERE t.user.id = :userId " +
+            "AND t.category.id = c.id " +
+            "AND t.date BETWEEN :startDate AND :endDate), 0)) " + // Esse é o consumedAmount
+            "FROM Budget b " +
+            "JOIN b.category c " +
+            "WHERE b.user.id = :userId AND b.period = :period")
+
+    List<BudgetResponseDTO> findBudgetsWithProgressByPeriod(
+            @Param("userId") Long userId,
+            @Param("period") Budget.BudgetPeriod period,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate);
 }
+
+
+
+

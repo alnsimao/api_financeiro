@@ -5,6 +5,7 @@ import aln.finance.system.dto.BudgetResponseDTO;
 import aln.finance.system.service.AuthService;
 import aln.finance.system.service.BudgetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,17 +21,18 @@ public class BudgetController {
 
 
     @PostMapping
-    public ResponseEntity<BudgetResponseDTO> getBudgets(@RequestBody BudgetRequestDTO budgetRequestDTO) {
+    public ResponseEntity<BudgetResponseDTO> createBudgets(@RequestBody BudgetRequestDTO budgetRequestDTO) {
         Long userId = authService.getLoggedUserId();
         Long categoryId = budgetRequestDTO.categoryId();
 
         BudgetResponseDTO responseDTO = budgetService.createBudget(userId,categoryId,budgetRequestDTO);
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
     @GetMapping
     public ResponseEntity<List<BudgetResponseDTO>> getBudgets() {
         Long userId = authService.getLoggedUserId();
-        List<BudgetResponseDTO> responseDTO = budgetService.listBudgetsWithProgress(userId);
+        List<BudgetResponseDTO> responseDTO = budgetService.listBudgetWithProgress(userId);
+
         return ResponseEntity.ok(responseDTO);
     }
 
