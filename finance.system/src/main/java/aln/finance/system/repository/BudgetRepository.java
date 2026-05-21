@@ -23,15 +23,14 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
     @Query("SELECT new aln.finance.system.dto.BudgetResponseDTO(" +
             "b.id, c.id, c.name, b.limitAmount, b.period, " +
-            "BigDecimal.ZERO, " +
-            "COALESCE((SELECT SUM(t.amount) FROM Transaction t " +
-            "WHERE t.user.id = :userId " +
-            "AND t.category.id = c.id " +
-            "AND t.date BETWEEN :startDate AND :endDate), 0)) " + // Esse é o consumedAmount
+            "CAST(0.0 AS bigdecimal), " + // Força o literal a ser BigDecimal
+            "COALESCE((SELECT CAST(SUM(t.amount) AS bigdecimal) FROM Transaction t " + // Garante o tipo no SUM
+            "          WHERE t.user.id = :userId " +
+            "          AND t.category.id = c.id " +
+            "          AND t.date BETWEEN :startDate AND :endDate), CAST(0.0 AS bigdecimal))) " +
             "FROM Budget b " +
             "JOIN b.category c " +
             "WHERE b.user.id = :userId AND b.period = :period")
-
     List<BudgetResponseDTO> findBudgetsWithProgressByPeriod(
             @Param("userId") Long userId,
             @Param("period") Budget.BudgetPeriod period,
