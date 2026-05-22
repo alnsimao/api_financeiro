@@ -1,13 +1,68 @@
 import { Link } from 'react-router-dom';
 
 function Register() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aqui você vai adicionar a lógica para enviar os dados para o Spring Boot futuramente
+    console.log("Formulário enviado!");
+  };
+
   return (
-    <div style={{ padding: '20px', maxWidth: '300px', margin: '50px auto' }}>
-        <h1 className="text-4xl font-bold text-blue-600">Testando Tailwind!</h1>
-      <h2>Criar Conta</h2>
-      {/* Aqui vai o formulário de cadastro */}
-      <p>Já tem conta? <Link to="/login">Faça Login</Link></p>
-      <Link to="/">Voltar para Home</Link>
+    <div className='bg-[#0f172a] text-white font-sans min-h-screen flex flex-col items-center justify-center p-4'>
+      
+      <div className='w-full max-w-md bg-[#1e293b] p-8 rounded-2xl shadow-xl'>
+        <h2 className='text-3xl font-bold mb-6 text-center text-emerald-400'>Criar Conta</h2>
+        
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div>
+            <label className='block text-sm font-medium mb-1' htmlFor='email'>
+              E-mail
+            </label>
+            <input 
+              type='email' 
+              id='email'
+              required
+              className='w-full px-4 py-2 rounded-lg bg-[#0f172a] border border-slate-700 text-white focus:outline-none focus:border-emerald-500 transition-colors'
+              placeholder='seu@email.com'
+            />
+          </div>
+
+          <div>
+            <label className='block text-sm font-medium mb-1' htmlFor='password'>
+              Senha
+            </label>
+            <input 
+              type='password' 
+              id='password'
+              required
+              className='w-full px-4 py-2 rounded-lg bg-[#0f172a] border border-slate-700 text-white focus:outline-none focus:border-emerald-500 transition-colors'
+              placeholder='••••••••'
+            />
+          </div>
+
+          <button 
+            type='submit' 
+            className='w-full bg-emerald-500 hover:bg-emerald-600 text-slate-900 font-bold py-2 px-4 rounded-lg transition-colors mt-2'
+          >
+            Cadastrar
+          </button>
+        </form>
+
+        <div className='mt-6 text-center text-sm text-slate-400 space-y-2'>
+          <p>
+            Já tem conta?{' '}
+            <Link to="/login" className='text-emerald-400 hover:underline'>
+              Faça Login
+            </Link>
+          </p>
+          <div>
+            <Link to="/" className='inline-block text-xs text-slate-500 hover:text-slate-300 underline'>
+              Voltar para Home
+            </Link>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
