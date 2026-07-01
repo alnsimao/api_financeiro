@@ -11,7 +11,7 @@ function Register() {
   
   const handleSubmit = async(e)=> {
     e.preventDefault();
-  }
+  
 
   const URL = "http://localhost:8080/api/auth/register";
 
@@ -32,7 +32,10 @@ try {
   }
 } catch(error){console.error("Erro na conexão: ",error);
   alert("Não foi possível iniciar a conexão.");
+}
+  
 };
+
 
 
   
@@ -52,6 +55,8 @@ try {
               type='email' 
               id='email'
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className='w-full px-4 py-2 rounded-lg bg-[#0f172a] border border-slate-700 text-white focus:outline-none focus:border-emerald-500 transition-colors'
               placeholder='seu@email.com'
             />
@@ -65,6 +70,8 @@ try {
               type='password' 
               id='password'
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className='w-full px-4 py-2 rounded-lg bg-[#0f172a] border border-slate-700 text-white focus:outline-none focus:border-emerald-500 transition-colors'
               placeholder='••••••••'
             />
