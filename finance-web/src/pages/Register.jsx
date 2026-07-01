@@ -15,20 +15,25 @@ function Register() {
 
   const URL = "http://localhost:8080/api/auth/register";
 
-  try{
-    const response = await fetch(URL,{
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({email, password}),
-    });
-    if(response.ok) alert ("Usuário Cadastrado!");  
-  }  catch(error){
-    console.error("Erro na conexão:",error)
+try {
+  const response = await fetch(URL,
+    {
+      method:'POST',
+      headers:{'Content-Type': 'application/json'},
+      body: JSON.stringify({email,password}),
+    }
+  );
+  if (response.ok){
+    alert("Usuário Cadastrado");
+    setEmail('')
+    setPassword('');
+  } else{
+    alert("Erro ao cadastrar. Verifique os dados");
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Formulário enviado!");
-  };
+} catch(error){console.error("Erro na conexão: ",error);
+  alert("Não foi possível iniciar a conexão.");
+};
+
 
   
 
