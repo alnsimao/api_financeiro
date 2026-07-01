@@ -1,11 +1,36 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+
+
+
 function Register() {
+
+  const[email, setEmail] = useState('');
+  const[password, setPassword] = useState('');
+  
+  const handleSubmit = async(e)=> {
+    e.preventDefault();
+  }
+
+  const URL = "http://localhost:8080/api/auth/register";
+
+  try{
+    const response = await fetch(URL,{
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password}),
+    });
+    if(response.ok) alert ("Usuário Cadastrado!");  
+  }  catch(error){
+    console.error("Erro na conexão:",error)
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aqui você vai adicionar a lógica para enviar os dados para o Spring Boot futuramente
     console.log("Formulário enviado!");
   };
+
+  
 
   return (
     <div className='bg-[#0f172a] text-white font-sans min-h-screen flex flex-col items-center justify-center p-4'>
