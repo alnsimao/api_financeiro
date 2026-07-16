@@ -13,10 +13,10 @@ function Register() {
     e.preventDefault();
   
 
-  const URL = "http://localhost:8080/api/auth/register";
+  const url = "http://localhost:8080/api/auth/register";
 
 try {
-  const response = await fetch(URL,
+  const response = await fetch(url,
     {
       method:'POST',
       headers:{'Content-Type': 'application/json'},
