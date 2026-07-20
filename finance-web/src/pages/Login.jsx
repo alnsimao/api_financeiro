@@ -1,15 +1,15 @@
-import { Link, useNavigate } from 'react-router-dom'; // Importado useNavigate para te redirecionar após o login
+import { Link, useNavigate } from 'react-router-dom'; 
 import { useState } from 'react';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // Hook para redirecionamento automático
+  const navigate = useNavigate(); 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. Corrigido para URL em maiúsculo para coincidir perfeitamente com a chamada do fetch abaixo
+   
     const URL = "http://localhost:8080/api/auth/login";
 
     try {
