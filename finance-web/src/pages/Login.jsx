@@ -30,7 +30,7 @@ function Login() {
         setPassword('');
         
         
-        navigate('/'); 
+        navigate('/dashboard'); 
       } else {
         alert("Erro ao logar usuário. Verifique os dados.");
       }
