@@ -2,6 +2,8 @@ package aln.finance.system.service;
 
 import aln.finance.system.dto.LoginRequest;
 import aln.finance.system.dto.LoginResponse;
+import aln.finance.system.exceptions.EmailAlreadyExistsException;
+import aln.finance.system.exceptions.UserNotFoundException;
 import aln.finance.system.model.User;
 import aln.finance.system.repository.UserRepository;
 import aln.finance.system.security.JwtUtil;
@@ -32,7 +34,7 @@ public class AuthService {
 
     public User createUser(User user) {
         if(userRepository.existsByEmail(user.getEmail()))
-            throw new RuntimeException("User with email " + user.getEmail() + " already exists");
+            throw new EmailAlreadyExistsException("User with email " + user.getEmail() + " already exists");
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -41,7 +43,7 @@ public class AuthService {
         Optional<User> userLogin = userRepository.findByEmail(loginRequest.getEmail());
 
         if(userLogin.isEmpty())
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
 
         User user = userLogin.get();
 
