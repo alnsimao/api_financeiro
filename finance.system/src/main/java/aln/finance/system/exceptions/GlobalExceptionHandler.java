@@ -8,17 +8,43 @@ import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler{
+
+
     @ExceptionHandler(UserNotFoundException.class)
-
-
     public ProblemDetail handleUserNotFound(UserNotFoundException ex){
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+       return createProblem(
+               HttpStatus.NOT_FOUND,
+               "User Not Found",
+               ex.getMessage()
+        );
+    }
+
+
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ProblemDetail handleEmailAlreadyExists(EmailAlreadyExistsException ex){
+        return createProblem(
+                HttpStatus.CONFLICT,
+                "Email Already Exists",
                 ex.getMessage()
         );
+    }
 
 
-        problem.setTitle("User not Found");
+
+    private ProblemDetail createProblem(
+            HttpStatus status,
+            String title,
+            String detail) {
+
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                status,
+                detail
+        );
+
+        problem.setTitle(title);
         problem.setProperty("timestamp", Instant.now());
+
         return problem;
     }
 
