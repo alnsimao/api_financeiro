@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Dashboard() {
   const navigate = useNavigate();
 
-  // Verifica se o usuário está logado ao carregar a página
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -12,10 +12,10 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Função simples e limpa para deslogar
+ 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // Remove o token do navegador
-    navigate('/'); // Redireciona para a Landing Page
+    localStorage.removeItem('token'); 
+    navigate('/');
   };
 
   return (
@@ -26,7 +26,7 @@ function Dashboard() {
         <div>
           {/* Logo / Título */}
           <h2 className="text-2xl font-bold text-emerald-400 mb-8 flex items-center gap-2">
-            💰 FinanceApp
+            💰 Finance
           </h2>
           
           {/* Links de Navegação */}
