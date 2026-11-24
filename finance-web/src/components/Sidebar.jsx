@@ -1,6 +1,11 @@
 import {NavLink} from "react-router-dom";
 
 export default function Sidebar() {
+
+    const activeClassName = ({isActive}) => "px-4 py-3 rounded-lg font-semibold transition-colors " + 
+    (isActive ? "bg-emerald-500/10 text-emerald-400" : "text-slate-300 hover:bg-slate-800 hover:text-white");
+    
+    
     return (
         <aside className="w-64 bg-[#1e293b] border-r border-slate-800 flex flex-col justify-between p-6">
             <div>
@@ -10,15 +15,15 @@ export default function Sidebar() {
                 </h2>
 
             <nav className="flex flex-col gap-2">
-                <NavLink to="/dashboard" end>
+                <NavLink className={activeClassName} to="/dashboard" end>
                     Início
                 </NavLink>
 
-                <NavLink to="/dashboard/categories">
+                <NavLink className={activeClassName} to="/dashboard/categories">
                     Categorias
                 </NavLink>
 
-                <NavLink to="/dashboard/transactions">
+                <NavLink className={activeClassName} to="/dashboard/transactions">
                     Transações
                 </NavLink>
             </nav>
