@@ -1,46 +1,10 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import { Link} from "react-router-dom";
 
 function Dashboard() {
   
   return(
     <>
-      {/* 1. MENU LATERAL (Sidebar) */}
-      <Sidebar />
-        <div>
-          {/* Logo / Título */}
-          <h2 className="text-2xl font-bold text-emerald-400 mb-8 flex items-center gap-2">
-            💰 Finance
-          </h2>
-          
-          {/* Links de Navegação */}
-          <nav className="space-y-3">
-            <Link to="/dashboard" className="block px-4 py-2.5 rounded-lg bg-emerald-500/10 text-emerald-400 font-semibold transition-colors">
-              Início
-            </Link>
-            
-            <Link to="/dashboard/categories" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
-              Categorias
-            </Link>
-            
-            <Link to="/dashboard/transactions" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
-              Transações
-            </Link>
-          </nav>
-        </div>
 
-        {/* Botão de Logout */}
-        <button 
-          onClick={handleLogout}
-          className="w-full bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white py-2 px-4 rounded-lg font-semibold transition-all"
-        >
-          Sair da Conta
-        </button>
-
-      {/* 2. ÁREA CONTEÚDO PRINCIPAL */}
-  
-        
         {/* Cabeçalho */}
         <header className="flex justify-between items-center mb-8">
           <div>
