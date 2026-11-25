@@ -1,28 +1,13 @@
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
   
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
-
- 
-  const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    navigate('/');
-  };
-
-  return (
-    <div className="bg-[#0f172a] text-white font-sans min-h-screen flex">
-      
+  return(
+    <>
       {/* 1. MENU LATERAL (Sidebar) */}
-      <aside className="w-64 bg-[#1e293b] border-r border-slate-800 flex flex-col justify-between p-6">
+      <Sidebar />
         <div>
           {/* Logo / Título */}
           <h2 className="text-2xl font-bold text-emerald-400 mb-8 flex items-center gap-2">
@@ -52,10 +37,9 @@ function Dashboard() {
         >
           Sair da Conta
         </button>
-      </aside>
 
       {/* 2. ÁREA CONTEÚDO PRINCIPAL */}
-      <main className="flex-1 p-8">
+  
         
         {/* Cabeçalho */}
         <header className="flex justify-between items-center mb-8">
@@ -99,10 +83,10 @@ function Dashboard() {
           </Link>
         </div>
 
-      </main>
-
-    </div>
+    </>
   );
+  
+  
 } 
 
 export default Dashboard;
