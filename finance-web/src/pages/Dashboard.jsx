@@ -20,11 +20,11 @@ function Dashboard() {
               Início
             </Link>
             
-            <Link to="/categorias" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+            <Link to="/dashboard/categories" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
               Categorias
             </Link>
             
-            <Link to="/transacoes" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+            <Link to="/dashboard/transactions" className="block px-4 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
               Transações
             </Link>
           </nav>
